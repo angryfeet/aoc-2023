@@ -12,7 +12,7 @@ class Day2
     @games.each do |game_id, game_list|
       pass = true
       game_list.each do |game|
-        colours = game.split(', ').map { |v| v.split(' ').reverse }.to_h
+        colours = colour_counts(game)
         colours.each do |colour, count|
           pass = false if count.to_i > limits[colour]
         end
@@ -27,7 +27,7 @@ class Day2
     @games.each do |_, game_list|
       game_mins = { 'red' => 0, 'green' => 0, 'blue' => 0 }
       game_list.each do |game|
-        colours = game.split(', ').map { |v| v.split(' ').reverse }.to_h
+        colours = colour_counts(game)
         colours.each do |colour, count|
           game_mins[colour] = count.to_i if game_mins[colour] < count.to_i
         end
@@ -35,6 +35,10 @@ class Day2
       minimums << game_mins.values
     end
     minimums.map { |mins| mins.inject(&:*) }.sum
+  end
+
+  def colour_counts(game)
+    game.split(', ').map { |v| v.split(' ').reverse }.to_h
   end
 end
 
